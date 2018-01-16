@@ -1,4 +1,5 @@
-﻿# Mafianaros - A discord cog built on top of Red. I've left some Red documentation here for convenience.
+﻿# Mafianaros - A discord cog built on top of Red. 
+I've left some Red documentation here for convenience.
 This discord bot uses channel commands and pms to manage a game of mafia
 
 
