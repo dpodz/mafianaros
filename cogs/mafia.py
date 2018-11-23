@@ -23,14 +23,21 @@ class CivRoles(Enum):
 
 # Role commands
 class RoleCommands(Enum):
-    Setup = '!addplayer "user"\n!addmafia "mafiarole"\n!addciv "civrole"\n!setlynchmode "lynchmode"\n!mafiastart\n'
+    Setup = (
+        '!addplayer "user"\n' +
+        '!addmafia "mafiarole" - Available mafia roles are ' + ','.join([e.value for e in MafiaRoles]) + '\n' +
+        '!addciv "civrole" - Available civ roles are ' + ','.join([e.value for e in CivRoles]) + '\n' + 
+        '!setlynchmode "lynchmode"\n'
+        '!mafiastart\n'
+    )
     All = '!lynch "user"\n!lynch "" (sets to no lynch)\n!lynchlist\n'
     Mafia = '!mafiamsg "message"\n"'
     Godfather = '!mafiakill "user"\n' 
-    Henchman = 'Henchman have no special commands. You suck\n'
-    Civilian = 'Civilians have no special commands. You suck\n'
+    Henchman = 'Henchman have no special commands.\n'
+    Civilian = 'Civilians have no special commands.\n'
     Doctor = '!doctorsave "user"\n'
     Detective = '!detectivefind "user"\n'
+
 # Possible game states
 class GameStates(Enum):
     LOADING = 0
@@ -104,10 +111,11 @@ class Mafia:
         self.gamestate = GameStates.LOADING
         self.day = 0
         
-        await self.bot.say( 'To do:\n' +
+        await self.bot.sendMessage( 'To do:\n' +
                             'Add players with !addplayer "name"\n' +
                             'Add mafia roles with !addmafia "rolename"\n' +
                             'Add civilian roles with !addciv "rolename"\n' +
+                            'Get help with !mafiahelp and check gamestate with !mafiastate' +
                             'Start the game with !mafiastart')
         
         
@@ -127,7 +135,7 @@ class Mafia:
         # list mafia roles
         await self.bot.say("Mafia roles: " + ", ".join(self.mafiaroles))
         # list civ roles
-        await self.bot.say("Civ (special) roles: " + ", ".join(self.civroles))
+        await self.bot.say("Civ roles: " + ", ".join(self.civroles))
         # Say which day it is
         await self.bot.say("Day: " + str(self.day))
         # Say gamestate
