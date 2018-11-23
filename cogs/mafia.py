@@ -214,10 +214,10 @@ class Mafia:
     async def setlynchmode (self, lynchmode):
         """sets the lynch mode. Type !setlynchmode list to list acceptable modes"""
         if (lynchmode == 'MAJORITY'):
-            self.lynchmode = LynchModes.REQUIREMAJORITY
+            self.lynchmode = LynchModes.MAJORITY
             await self.bot.say("Lynch Mode set to require majority of players to vote on the same player")
         elif (lynchmode == 'PLURALITY'):
-            self.lynchmode = LynchModes.LYNCHMOST
+            self.lynchmode = LynchModes.PLURALITY
             await self.bot.say("Lynch Mode set to lynch the player with the highest number of votes")
         else:
             await self.bot.say("That is not an acceptable lynch mode")
@@ -308,7 +308,7 @@ class Mafia:
             for player in self.players:
                 player.lynchchoice = None
             await self.bot.say('The day has ended and lynching is complete. Night has fallen upon us. The mafia and special civs may message me with their commands')
-            self.gamestate = GameStates.NIGHT
+        await self.nightstart()
             
     
     @commands.command()
@@ -425,7 +425,12 @@ class Mafia:
             self.gamestate = GameStates.DAY
             self.day += 1
             await self.bot.say( 'A new day is upon us, and with it comes death.\n'
-                                'It\'s lynching time motherfuckers.')
+                                'It\'s lynching time!')
+    
+    async def nightstart(self):
+        """start a new night"""
+        if(await self.checkconditions()):
+            return
     
     async def checkconditions(self):
         """Check win conditions"""
